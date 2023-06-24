@@ -1,0 +1,100 @@
+usuarios_e_contas = dict()
+clientes = []
+saldo = 0
+limite = 500
+extrato = ""
+numero_saques = 0
+LIMITE_SAQUES = 3
+cpf_lista = []
+while True:
+    def menu():
+        return """
+        [c] Criar usuário e conta
+        [d] Depositar
+        [s] Sacar
+        [e] Extrato
+        [q] Sair    
+        Digite a opção: 
+        => """
+
+    opcao_menu = input(menu())
+
+    def criar_usuario():
+        while True:
+            usuarios_e_contas = dict()
+            nome = str(input('Qual o seu nome completo: '))
+            bairro = str(input('Qual o seu  bairro: '))
+            cidade = str(input('Qual da sua cidade: '))
+            estado = str(input('Qual o seu  estado: '))
+            cpf = str(input('Qual o seu  CPF: '))
+            print('Dados corretos?')
+            print(nome)
+            print(bairro)
+            print(cidade)
+            print(estado)
+            continar = str(input('Continuar? ')).upper().strip()[0]
+            if cpf in cpf_lista:
+                print('CPF inválido')
+            if continar == 'S':
+                usuarios_e_contas['Nome'] = nome
+                usuarios_e_contas['Bairro'] = bairro
+                usuarios_e_contas['Cidade'] = cidade
+                usuarios_e_contas['Estado'] = estado
+                usuarios_e_contas['CPF'] = cpf
+                cpf_lista.append(cpf)
+                print(usuarios_e_contas)
+                break
+            continue
+
+    def depositar():
+
+        while True:
+            global saldo
+            global extrato
+            valor_depositado = float(input("Qual o valor: R$ "))
+            if valor_depositado > 0:
+                saldo += valor_depositado
+                print(f'Seu saldo é de R$ {saldo:.2f}')
+                extrato += f'Deposito de: R$ {valor_depositado} '
+                break
+
+
+    def sacar():
+        global saldo
+        global extrato
+        global numero_saques
+        while True:
+            valor_sacado = float(input('Valor a sacar: R$ '))
+            if valor_sacado > saldo + limite:
+                print('Saldo insuficente')
+                continue
+            if numero_saques > 2:
+                print('Excedeu o número de saques')
+                break
+            else:
+                saldo -= valor_sacado
+                extrato += f'Saque de: R$ {valor_sacado}'
+                numero_saques += 1
+                extrato += f'Deposito de: R$ {valor_sacado} '
+                print(f'Seu saldo é de R$ {saldo:.2f}')
+                print(f'Número de saque {numero_saques}, máxomo 3')
+                break
+
+    def extrato_hist():
+        print(extrato)
+
+
+
+
+    if opcao_menu == 'c':
+        criar_usuario()
+    if opcao_menu == 'd':
+        depositar()
+    if opcao_menu == 's':
+        sacar()
+    if opcao_menu == 'e':
+        extrato_hist()
+    if opcao_menu == 'q':
+        break
+    else:
+        print('Opção invalida')
